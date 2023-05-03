@@ -7,8 +7,8 @@ from BackwardChaining import BackwardChaining
 def parse_input_file(filename):
     with open(filename, 'r') as f:
         lines = f.read().splitlines()
-        tell = lines[0].split(' ')[1]
-        ask = lines[1].split(' ')[1]
+        tell = lines[1]
+        ask = lines[4]
         return tell, ask
 
 # Define a function to implement the Truth Table checking algorithm
