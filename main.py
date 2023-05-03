@@ -5,12 +5,19 @@ from BackwardChaining import BackwardChaining
 
 # Define a function to parse the input file and extract the knowledge base and query
 def parse_input_file(filename):
-    with open(filename, 'r') as f:
-        lines = f.read().splitlines()
-        lines = [line.replace(' ', '').strip() for line in lines]
-        t, a = lines[1].split(';'), lines[3].split(';')
-        tell, ask = list(filter(None, t)), list(filter(None, a))
-        return tell, ask
+    try:
+        with open(filename, 'r') as f:
+            lines = f.read().splitlines()
+            lines = [line.replace(' ', '').strip() for line in lines]
+            tell_list, ask_list = lines[1].split(';'), lines[3].split(';')
+            tell, ask = list(filter(None, tell_list)), list(filter(None, ask_list))
+            return tell, ask
+    except FileNotFoundError: # Error handling for file not found
+        print(f"Error: file {filename} not found.")
+        sys.exit(1)
+    except IndexError: # error handling for wrong formatting of input text
+        print(f"Error: file {filename} is not in the correct format.")
+        sys.exit(1)
 
 # Define a function to implement the Truth Table checking algorithm
 def tt_checking(kb, query):
@@ -30,29 +37,28 @@ def backward_chaining(kb, query):
     result = bc.check
     return result
 
-if __name__ == '__main__':
-# Check if the correct number of command line arguments have been passed
+# Main function
+def main():
     if len(sys.argv) != 3:
         print("Usage: python iengine.py [method] [filename]")
         sys.exit(1)
 
-# Extract the method and filename from the command line arguments
-method = sys.argv[1]
-filename = sys.argv[2]
+    method = sys.argv[1]
+    filename = sys.argv[2]
 
-# Parse the input file to extract the knowledge base and query
-kb, query = parse_input_file(filename)
+    kb, query = parse_input_file(filename)
 
-# Call the appropriate algorithm based on the selected method
-if method == 'TT':
-    result = tt_checking(kb, query)
-elif method == 'FC':
-    result = forward_chaining(kb, query)
-elif method == 'BC':
-    result = backward_chaining(kb, query)
-else:
-    print("Invalid method. Method must be TT, FC or BC.")
-    sys.exit(1)
+    if method == 'TT':
+        result = tt_checking(kb, query)
+    elif method == 'FC':
+        result = forward_chaining(kb, query)
+    elif method == 'BC':
+        result = backward_chaining(kb, query)
+    else:
+        print("Invalid method. Method must be TT, FC or BC.")
+        sys.exit(1)
 
-# Print the result
-print(result)
+    print(result)
+
+if __name__ == '__main__':
+    main()
