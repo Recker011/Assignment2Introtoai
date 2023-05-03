@@ -1,4 +1,7 @@
 import sys
+from TTchecking import TTchecking
+from ForwardChaining import ForwardChaining
+from BackwardChaining import BackwardChaining
 
 # Define a function to parse the input file and extract the knowledge base and query
 def parse_input_file(filename):
@@ -10,18 +13,21 @@ def parse_input_file(filename):
 
 # Define a function to implement the Truth Table checking algorithm
 def tt_checking(kb, query):
-    # The implementation of Truth Table checking algorithm here
-    pass
+    tt = TTchecking(kb, query)
+    result = tt.check
+    return result
 
 # Define a function to implement the Forward Chaining algorithm
 def forward_chaining(kb, query):
-    # The implementation of Forward Chaining algorithm here
-    pass
+    fc = ForwardChaining(kb, query)
+    result = fc.check
+    return result
 
 # Define a function to implement the Backward Chaining algorithm
 def backward_chaining(kb, query):
-    # The implementation of Backward Chaining algorithm here
-    pass
+    bc = BackwardChaining(kb, query)
+    result = bc.check
+    return result
 
 if __name__ == '__main__':
 # Check if the correct number of command line arguments have been passed
