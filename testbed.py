@@ -2,7 +2,7 @@ def parse_input_file(filename):
     with open(filename, 'r') as f:
         lines = f.read().splitlines()
         tell = lines[1]
-        ask = lines[4]
+        ask = lines[3]
         return tell, ask
 
 def checkparsein():
