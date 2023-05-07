@@ -66,6 +66,6 @@ class TTchecking:
 
     def check(self):
         if self.check_all(self.kb,self.query,self.symbols.copy(),{}):
-            return f'YES: {self.num_models}'
+            return f'YES'
         else:
             return 'NO'
