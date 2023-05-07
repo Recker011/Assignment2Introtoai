@@ -12,21 +12,21 @@ def parse_input_file(filename):
 
 def checkparsein():
     line1, line2 = parse_input_file(
-        "C:\\Users\\Randew Kumarasinghe\\Desktop\\COS30019\\Assignment2Introtoai\\Assignment2Introtoai\\test.txt"
+        "test_genericKB.txt"
     )
     print(line1, line2)
 
 
 def checkTTcheck():
     kb, query = parse_input_file(
-        "C:\\Users\\Randew Kumarasinghe\\Desktop\\COS30019\\Assignment2Introtoai\\Assignment2Introtoai\\test.txt"
+        "test_HornKB.txt"
     )
     tt = TTchecking(kb, query[0])
     result = tt.check()
     print(result)
     
-    
-checkTTcheck()
+
+checkparsein()
 
 
 

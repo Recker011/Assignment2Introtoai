@@ -29,8 +29,8 @@ class TTchecking:
         elif '&' in sentence:
             lhs, rhs = sentence.split('&')
             return self.pl_true(lhs, model) and self.pl_true(rhs, model)
-        elif '|' in sentence:
-            lhs, rhs = sentence.split('|')
+        elif '||' in sentence:
+            lhs, rhs = sentence.split('||')
             return self.pl_true(lhs, model) or self.pl_true(rhs, model)
         elif '<=>' in sentence:
             lhs, rhs = sentence.split('<=>')
