@@ -212,13 +212,13 @@ class Sentence:
                 
         
     
-sentence = Sentence('(a<=>(c=>~d))')
+#sentence = Sentence('(a<=>(c=>~d))')
 
-sentence = sentence.toCNF()
+#sentence = sentence.toCNF()
 
-print(sentence.clause)
+#print(sentence.clause)
 
-'~a||(~c||~d)&(c&d)||a&b&(~b||a)'
+#'~a||(~c||~d)&(c&d)||a&b&(~b||a)'
 
 
 
