@@ -3,18 +3,10 @@ class BackwardChaining:
         self.kb = [clause.toCNF() for clause in kb]
         self.query = query
         self.agenda = [query]
-        self.count = {}
         self.inferred = {}
-        self.symbols = self.get_symbols(self.kb + [query])
+        self.symbols = self.get_symbols(kb + [query])
         for symbol in self.symbols:
             self.inferred[symbol] = False
-        for clause in self.kb:
-            if clause.connective == '&':
-                for subclause in clause.subclauses:
-                    if subclause.connective == '||':
-                        self.count[subclause] = len(subclause.subclauses)
-            elif clause.connective == '||':
-                self.count[clause] = len(clause.subclauses)
 
     def get_symbols(self, sentences):
         symbols = set()
@@ -27,25 +19,21 @@ class BackwardChaining:
     def check(self):
         while len(self.agenda) > 0:
             q = self.agenda.pop(0)
+            print(f"Processing query: {q.clause}")
             if not self.inferred[q.clause]:
+                print(f"Inferred[{q.clause}] is False")
                 self.inferred[q.clause] = True
-                for clause in [c for c in self.kb if c.connective == '&' or c.connective == '||']:
-                    if clause.connective == '&':
-                        for subclause in clause.subclauses:
-                            if subclause.connective == '||' and q.clause in subclause.clause:
-                                if subclause in self.count:
-                                    self.count[subclause] -= 1
-                                if self.count[subclause] == 0:
-                                    if clause.clause == self.query.clause:
-                                        return 'YES'
-                                    else:
-                                        self.agenda.extend(clause.subclauses)
-                    elif clause.connective == '||' and q.clause in clause.clause:
-                        if clause in self.count:
-                            self.count[clause] -= 1
-                        if self.count[clause] == 0:
-                            if clause.clause == self.query.clause:
-                                return 'YES'
-                            else:
-                                self.agenda.extend(clause.subclauses)
+                for clause in [c for c in self.kb if c.connective == '&']:
+                    print(f"Processing clause: {clause.clause}")
+                    for subclause in clause.subclauses:
+                        print(f"Processing subclause: {subclause.clause}")
+                        if subclause.connective == '||' and q.clause in subclause.clause:
+                            print(f"Found subclause: {subclause.clause}")
+                            if all(self.inferred[symbol] for symbol in subclause.symbols):
+                                print(f"All symbols in subclause are inferred")
+                                if subclause.clause == self.query.clause:
+                                    return 'YES'
+                                else:
+                                    self.agenda.append(subclause)
+                                    print(f"Adding {subclause.clause} to agenda")
         return 'NO'
