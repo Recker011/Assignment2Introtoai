@@ -1,12 +1,9 @@
 import re
-
-
 class Sentence:
     def __init__(self, clause, connective = None):
         self.clause = clause
         self.connective = connective
         self.subclauses = []
-
     def parsesentence(self):
     
         bracketcounter = 0
@@ -95,11 +92,10 @@ class Sentence:
     
     def toCNF(self):
         
-        self.parsesentence()      
-          
+        self.parsesentence()
+                       
         if self.connective == '<=>':
             eliminated = self.bicon_elim()
-
             return eliminated.toCNF()
                                 
         elif self.connective == '=>':
@@ -142,7 +138,6 @@ class Sentence:
                 i.distributivity_conjunction()
                 print(i.clause)    
                 final.clause = final.clause + i.clause
-
             return final
             
                     
@@ -177,7 +172,6 @@ class Sentence:
         result = Sentence(eliminated_sentence)
         
         return result
-
     def implication_elim(self):
         eliminated_sentence = '~{}||{}'.format(self.subclauses[0].clause,self.subclauses[1].clause)
         result = Sentence(eliminated_sentence)
@@ -209,39 +203,3 @@ class Sentence:
                 rhs.parsesentence()
                 if rhs.connective == '&':
                     self.clause = '(({}||{})&({}||{}))'.format(lhs.clause, rhs.subclauses[0].clause, lhs.clause, rhs.subclauses[1].clause)
-                
-    def to_implication(self):
-        if self.connective == '<=>':
-            lhs = self.subclauses[0]
-            rhs = self.subclauses[1]
-            return [Sentence(f'({lhs.clause}=>{rhs.clause})'), Sentence(f'({rhs.clause}=>{lhs.clause})')]
-        elif self.connective == '=>':
-            return [self]
-        elif self.connective == '&':
-            lhs = self.subclauses[0]
-            rhs = self.subclauses[1]
-            return lhs.to_implication() + rhs.to_implication()
-        elif self.connective == '||':
-            lhs = self.subclauses[0]
-            rhs = self.subclauses[1]
-            return [Sentence(f'(~{lhs.clause}=>{rhs.clause})')]
-        elif self.connective == '~':
-            negated_sentence = self.subclauses[0]
-            if negated_sentence.connective == '&':
-                lhs = negated_sentence.subclauses[0]
-                rhs = negated_sentence.subclauses[1]
-                return [Sentence(f'({lhs.clause}=>~{rhs.clause})')]
-            elif negated_sentence.connective == '||':
-                lhs = negated_sentence.subclauses[0]
-                rhs = negated_sentence.subclauses[1]
-                return [Sentence(f'(~{lhs.clause}=>~{rhs.clause})')]
-        else:
-            return [self]   
-    
-#sentence = Sentence('(a<=>(c=>~d))')
-
-#sentence = sentence.toCNF()
-
-#print(sentence.clause)
-
-#'~a||(~c||~d)&(c&d)||a&b&(~b||a)'

@@ -50,7 +50,7 @@ def checkTTcheck():
 
 def checkBCcheck():
     algorithm = 'BCcheck'
-    filename = "input.txt"  # Make sure this is the correct input file
+    filename = "test_HornKB.txt"  # Make sure this is the correct input file
     print(f"Reading input file: {filename}    |||||   algorithm: {algorithm}")
     kb, query = parse_input_file(filename)
     if not query:
