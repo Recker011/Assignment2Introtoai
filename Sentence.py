@@ -140,7 +140,7 @@ class Sentence:
             for i in a:
                 i = Sentence(i)
                 i.distributivity_conjunction()
-                #print(i.clause)    
+                print(i.clause)    
                 final.clause = final.clause + i.clause
 
             return final

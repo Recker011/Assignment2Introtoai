@@ -1,32 +1,14 @@
 from Sentence import Sentence
+from TTchecking import TTchecking
+
 
 class KB:
     def __init__(self):
-        self.sentences = []
-        
+        self.clauses = []
+
     def tell(self, sentence):
-        self.sentences.append(sentence)
-        pass
-    
-    def ask(self):
-        pass
-    
-    
-    
-    
-sentence = Sentence('b<=>a')
+        self.clauses.append(Sentence(sentence))
 
-kb = KB()
-
-kb.tell(sentence)
-
-kb.toCNF(kb.sentences[0])
-
-print(kb.sentences[0].clause)
-
-
-
-
-
-
-
+    def ask(self, query):
+        query_sentence = Sentence(query)
+        return TTchecking(self.clauses, query_sentence).check()
