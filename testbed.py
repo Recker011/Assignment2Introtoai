@@ -28,22 +28,29 @@ def checkparsein():
     print(line1, line2)
 
 def checkTTcheck():
+    KB = []
     algorithm = "TTcheck"
-    filename = "test.txt"
+    filename = "test_HornKB.txt"
     print(f"Reading input file: {filename}   |||||   algorithm: {algorithm}")
     kb, query = parse_input_file(filename)
     print(f"kb: {kb}")
-    print(f"query: {query}")
+    for i in kb:
+        KB.append(i.clause)
+        print(f'{i.clause}')
+        print(f'a: {KB}')
+    
+    Q = query.clause
+    print(f'{query.clause}')
     if not query:
         print("Error: query list is empty")
         return
-    tt = TTchecking(kb, query)
+    tt = TTchecking(kb,query)
     result = tt.check()
     print(result)
 
 def checkBCcheck():
     algorithm = 'BCcheck'
-    filename = "test_genericKB.txt"
+    filename = "input.txt"  # Make sure this is the correct input file
     print(f"Reading input file: {filename}    |||||   algorithm: {algorithm}")
     kb, query = parse_input_file(filename)
     if not query:
@@ -53,5 +60,5 @@ def checkBCcheck():
     result = bc.check()
     print(result)
 
-checkTTcheck()
-#checkBCcheck()
+#checkTTcheck()
+checkBCcheck()
