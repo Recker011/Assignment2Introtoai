@@ -1,55 +1,51 @@
 def forward_chaining(KB, q):
-    # Convert KB to Conjunctive Normal Form (CNF)
-    KB = KB.split(' & ')
-    for i in range(len(KB)):
-        KB[i] = KB[i].replace('(', '').replace(')', '').split(' | ')
-
-    # Initialize count, inferred and agenda
+    # Split the KB into clauses
+    clauses = KB.split("; ")
+    # Initialize the count of premises for each implication
     count = {}
+    # Initialize the inferred dictionary
     inferred = {}
+    # Initialize the agenda with known facts
     agenda = []
-    for i, clause in enumerate(KB):
-        if len(clause) == 1:
-            literal = clause[0]
-            if literal[0] == '~':
-                inferred[literal[1:]] = False
-            else:
-                inferred[literal] = True
-            agenda.append(literal)
+    for clause in clauses:
+        # Check if the clause is an implication
+        if "=>" in clause:
+            # Split the clause into premise and conclusion
+            premise, conclusion = clause.split(" => ")
+            # Count the number of premises
+            count[conclusion] = len(premise.split("&"))
+            inferred[conclusion] = False
         else:
-            count[i] = len(clause)
-
-    # Forward chaining algorithm
+            # Add the fact to the agenda
+            agenda.append(clause)
+            inferred[clause] = True
+    # Initialize the entailed list
     entailed = []
-    while len(agenda) > 0:
+    while agenda:
+        # Pop the first symbol from the agenda
         p = agenda.pop(0)
+        # Add the symbol to the entailed list
+        entailed.append(p)
+        # Check if the symbol is the query
         if p == q:
-            entailed.insert(0, p)
-            return 'YES: ' + ', '.join(entailed)
-        if p not in entailed:
-            inferred[p] = True
-            entailed.insert(0, p)
-        for i, clause in enumerate(KB):
-            if p in clause:
-                if i in count: # Check if key exists in count dictionary
-                    count[i] -= 1
-                    if count[i] == 0:
-                        for literal in clause:
-                            if literal[0] == '~':
-                                if literal[1:] != p and (literal[1:] not in inferred or inferred[literal[1:]] == False):
-                                    inferred[literal[1:]] = False
-                            else:
-                                if literal != p and (literal not in inferred or inferred[literal] == False):
-                                    inferred[literal] = True
-                                    agenda.append(literal)
-    return 'NO'
+            return "YES: " + ", ".join(entailed)
+        # For each implication in the KB
+        for clause in clauses:
+            if "=>" in clause:
+                premise, conclusion = clause.split(" => ")
+                # If p is one of the premises
+                if p in premise.split("&"):
+                    # Decrease the count of premises for this implication
+                    count[conclusion] -= 1
+                    # If all premises are true
+                    if count[conclusion] == 0:
+                        # Add the conclusion to the agenda
+                        if not inferred[conclusion]:
+                            agenda.append(conclusion)
+                            inferred[conclusion] = True
+    return "NO"
 
-
-
-
-
-
-KB = '(a & d | c)'
-q = 'd'
+KB = "p2 => p3; p3 => p1; c => e; b&e => f; f&g => h; p1 => d; p1&p3 => c; a; b; p2"
+q = "d"
 result = forward_chaining(KB, q)
 print(result)
