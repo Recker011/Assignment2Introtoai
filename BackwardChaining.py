@@ -1,53 +1,45 @@
-from Sentence import Sentence
-
 class BackwardChaining:
-    def __init__(self, kb, query):
-        self.kb = kb
-        self.query = query
-        self.agenda = [query.clause]
-        self.counts = {}
-        self.inferred = {}
-        self.clauses = []
-        for sentence in kb:
-            sentence = sentence.toCNF()
-            if '=>' in sentence.clause:
-                lhs, rhs = sentence.clause.split('=>')
-                lhs = lhs.strip('()')
-                if '&' in lhs:
-                    premises = lhs.split('&')
-                else:
-                    premises = [lhs]
-                self.clauses.append((premises, rhs))
-                if rhs not in self.counts:
-                    self.counts[rhs] = 0
-                self.counts[rhs] += 1
+    
+    @staticmethod
+    def check(KB, q):
+        # Initialize the inferred dictionary
+        inferred = {}
+        for clause in KB:
+            if "=>" in clause:
+                premise, conclusion = clause.split("=>")
+                inferred[conclusion.strip()] = False
             else:
-                self.agenda.append(sentence.clause)
-        print(f"Initial agenda: {self.agenda}")
-        print(f"Initial counts: {self.counts}")
-        print(f"Clauses: {self.clauses}")
+                inferred[clause.strip()] = True
+        # Initialize the entailed list
+        entailed = []
+        # Call the recursive BC function
+        result = BackwardChaining.BC(KB, q[0], inferred, entailed)
+        if result:
+            return "YES: " + ", ".join(entailed)
+        else:
+            return "NO"
 
-    def check(self):
-        while self.agenda:
-            p = self.agenda.pop(0)
-            print(f"Processing: {p}")
-            if p == self.query.clause:
-                return 'YES'
-            if p not in self.inferred:
-                self.inferred[p] = True
-                for clause in self.clauses:
-                    premises, rhs = clause
-                    if p in premises:
-                        print(f"Reducing count for {rhs}")
-                        self.counts[rhs] -= 1
-                        if self.counts[rhs] == 0:
-                            print(f"Adding {rhs} to agenda")
-                            self.agenda.append(rhs)
-        return 'NO'
-
-    def get_symbols(self, sentence):
-        symbols = []
-        for char in sentence:
-            if char.isalpha() and char not in symbols:
-                symbols.append(char)
-        return symbols
+    def BC(KB, q, inferred, entailed):
+        # Check if the query is already known to be true
+        if inferred[q]:
+            return True
+        # Find all implications with q as the conclusion
+        implications = [clause for clause in KB if "=>" in clause and clause.split("=>")[1].strip() == q]
+        for implication in implications:
+            # Split the implication into premise and conclusion
+            premise, conclusion = implication.split("=>")
+            # Check if all premises are true
+            premises = premise.split("&")
+            all_true = True
+            for p in premises:
+                # Recursively call BC on each premise
+                if not BackwardChaining.BC(KB, p.strip(), inferred, entailed):
+                    all_true = False
+                    break
+            # If all premises are true
+            if all_true:
+                # Add q to the entailed list and mark it as inferred
+                entailed.append(q)
+                inferred[q] = True
+                return True
+        return False
