@@ -3,6 +3,7 @@ from BackwardChaining import BackwardChaining
 from Sentence import Sentence
 import sys
 import re
+from KB import KB
 
 def parse_input_file(filename):
     try:
@@ -11,13 +12,17 @@ def parse_input_file(filename):
             lines = [line.replace(' ', '').strip() for line in lines]
             tell_list, ask_list = lines[1].split(';'), lines[3].split(';')
             tell, ask = list(filter(None, tell_list)), list(filter(None, ask_list))
-            kb = [Sentence(sentence) for sentence in tell]
+            kb = KB()
+            for sentence in tell:
+                kb.tell(sentence)
             query = Sentence(ask[0])
             return kb, query
-    except FileNotFoundError: # Error handling for file not found
+    except FileNotFoundError:
+        # Error handling for file not found
         print(f"Error: file {filename} not found.")
         sys.exit(1)
-    except IndexError: # error handling for wrong formatting of input text
+    except IndexError:
+        # error handling for wrong formatting of input text
         print(f"Error: file {filename} is not in the correct format.")
         sys.exit(1)
         
@@ -34,10 +39,6 @@ def checkTTcheck():
     print(f"Reading input file: {filename}   |||||   algorithm: {algorithm}")
     kb, query = parse_input_file(filename)
     print(f"kb: {kb}")
-    for i in kb:
-        KB.append(i.clause)
-        print(f'{i.clause}')
-        print(f'a: {KB}')
     
     Q = query.clause
     print(f'{query.clause}')
@@ -60,5 +61,5 @@ def checkBCcheck():
     result = bc.check()
     print(result)
 
-#checkTTcheck()
-checkBCcheck()
+checkTTcheck()
+#checkBCcheck()

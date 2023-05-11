@@ -1,48 +1,24 @@
-from itertools import product
-from Sentence import Sentence
+import re
 
-class TTchecking:
-    def __init__(self, kb, query):
-        self.kb = kb
-        self.query = query
-        self.symbols = self.get_symbols(kb + [query])
-        self.model = {}
+def truth_table_check(kb, query):
 
-    def get_symbols(self, sentences):
-        symbols = set()
-        for sentence in sentences:
-            for char in sentence.clause:
-                if char.isalpha() and char not in symbols:
-                    symbols.add(char)
-        return list(symbols)
-
-    def check_all(self, kb, query, symbols, model):
-        if not symbols:
-            if self.pl_true(kb, model):
-                return self.pl_true(query, model)
+    symbols = list(set(re.findall(r'[a-z]+[0-9]*', kb)))
+    def evaluate(expression, values):
+        for s in symbols:
+            expression = expression.replace(s, str(values[s]))
+        return eval(expression)
+    models = 0
+    for i in range(2**len(symbols)):
+        values = {symbols[j]: (i >> j) & 1 for j in range(len(symbols))}
+        if evaluate(kb, values):
+            if evaluate(query, values):
+                models += 1
             else:
-                return True
-        else:
-            p = symbols[0]
-            rest = symbols[1:]
-            return (self.check_all(kb, query, rest, {**model, p: True}) and
-                    self.check_all(kb, query, rest, {**model, p: False}))
+                return 'NO'
+    return f'YES:{models}'
 
-    def pl_true(self, sentence, model):
-        if isinstance(sentence, list):
-            return all(self.pl_true(s, model) for s in sentence)
-        elif sentence.clause[0] == '~':
-            return not self.pl_true(Sentence(sentence.clause[1:]), model)
-        elif '&' in sentence.clause:
-            left_clause = Sentence(sentence.clause.split('&')[0])
-            right_clause = Sentence('&'.join(sentence.clause.split('&')[1:]))
-            return self.pl_true(left_clause, model) and self.pl_true(right_clause, model)
-        elif '|' in sentence.clause:
-            left_clause = Sentence(sentence.clause.split('|')[0])
-            right_clause = Sentence('|'.join(sentence.clause.split('|')[1:]))
-            return self.pl_true(left_clause, model) or self.pl_true(right_clause, model)
-        else:
-            return model.get(sentence.clause)
 
-    def check(self):
-        return self.check_all(self.kb, self.query, self.symbols, {})
+kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
+query = '~g'
+result = truth_table_check(kb, query)
+print(result)

@@ -1,33 +1,55 @@
-from Sentence import Sentence
+def forward_chaining(KB, q):
+    # Convert KB to Conjunctive Normal Form (CNF)
+    KB = KB.split(' & ')
+    for i in range(len(KB)):
+        KB[i] = KB[i].replace('(', '').replace(')', '').split(' | ')
 
-class ForwardChaining:
-    def __init__(self, kb, query):
-        self.kb = kb
-        self.query = query
-
-    def check(self):
-        count = {}
-        inferred = {}
-        agenda = []
-
-        for clause in self.kb:
-            if len(clause.subclauses) == 0:
-                agenda.append(clause.clause)
+    # Initialize count, inferred and agenda
+    count = {}
+    inferred = {}
+    agenda = []
+    for i, clause in enumerate(KB):
+        if len(clause) == 1:
+            literal = clause[0]
+            if literal[0] == '~':
+                inferred[literal[1:]] = False
             else:
-                count[clause] = len(clause.subclauses)
+                inferred[literal] = True
+            agenda.append(literal)
+        else:
+            count[i] = len(clause)
 
-        while agenda:
-            p = agenda.pop(0)
-            if p == self.query.clause:
-                return 'YES'
-            if p not in inferred:
-                inferred[p] = True
-                for clause in self.kb:
-                    if p in [subclause.clause for subclause in clause.subclauses]:
-                        count[clause] -= 1
-                        if count[clause] == 0:
-                            if clause.connective == '=>':
-                                agenda.append(clause.subclauses[-1].clause)
+    # Forward chaining algorithm
+    entailed = []
+    while len(agenda) > 0:
+        p = agenda.pop(0)
+        if p == q:
+            entailed.insert(0, p)
+            return 'YES: ' + ', '.join(entailed)
+        if p not in entailed:
+            inferred[p] = True
+            entailed.insert(0, p)
+        for i, clause in enumerate(KB):
+            if p in clause:
+                if i in count: # Check if key exists in count dictionary
+                    count[i] -= 1
+                    if count[i] == 0:
+                        for literal in clause:
+                            if literal[0] == '~':
+                                if literal[1:] != p and (literal[1:] not in inferred or inferred[literal[1:]] == False):
+                                    inferred[literal[1:]] = False
                             else:
-                                agenda.append(clause.clause)
-        return 'NO'
+                                if literal != p and (literal not in inferred or inferred[literal] == False):
+                                    inferred[literal] = True
+                                    agenda.append(literal)
+    return 'NO'
+
+
+
+
+
+
+KB = '(a & d | c)'
+q = 'd'
+result = forward_chaining(KB, q)
+print(result)

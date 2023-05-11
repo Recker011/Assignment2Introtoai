@@ -4,6 +4,17 @@ class Sentence:
         self.clause = clause
         self.connective = connective
         self.subclauses = []
+        self.symbols = self.get_symbols()
+        self.parsesentence()
+        
+    
+    def get_symbols(self):
+        symbols = set()
+        for char in self.clause:
+            if char.isalpha() and char not in symbols:
+                symbols.add(char)
+        return list(symbols)
+        
     def parsesentence(self):
     
         bracketcounter = 0
