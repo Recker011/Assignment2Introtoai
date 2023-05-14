@@ -29,7 +29,7 @@ class ForwardChaining:
             entailed.append(p)
             # Check if the symbol is the query
             if p == q[0]:
-                return "YES: " + ", ".join(entailed)
+                return "YES: " + ", ".join(entailed) # outputs YES and order of entailed facts
             # For each implication in the kb
             for clause in kb:
                 if "=>" in clause:

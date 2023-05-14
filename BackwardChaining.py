@@ -9,13 +9,13 @@ class BackwardChaining:
                 premise, conclusion = clause.split("=>")
                 inferred[conclusion.strip()] = False
             else:
-                inferred[clause.strip()] = True
+                inferred[clause.strip()] = False
         # Initialize the entailed list
         entailed = []
         # Call the recursive BC function
         result = BackwardChaining.BC(KB, q[0], inferred, entailed)
         if result:
-            return "YES: " + ", ".join(entailed)
+            return "YES: " + ", ".join(entailed) # outputs the YES and order of entailed facts
         else:
             return "NO"
 
