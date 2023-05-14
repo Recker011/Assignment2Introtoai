@@ -1,31 +1,51 @@
-import random
-import string
-
-def convert_cnf(cnf_str):
-    # Split the CNF statement into clauses
-    clauses = cnf_str.split(" & ")
-    new_clauses = []
+def to_cnf(sentence):
+    # split the sentence into clauses
+    clauses = sentence.split(';')
+    cnf = []
     for clause in clauses:
-        # Remove the parentheses
-        clause = clause[1:-1]
-        # Split the clause into literals
-        literals = clause.split(" | ")
-        new_literals = []
-        for literal in literals:
-            # Check if the literal is negative
-            if "~" in literal:
-                # Remove the negation symbol and add a randomized new clause
-                new_literal = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
-                new_literals.append(new_literal)
+        clause = clause.strip()
+        # evaluate expressions within brackets first
+        while '(' in clause:
+            start = clause.rfind('(')
+            end = clause.find(')', start)
+            subclause = clause[start+1:end]
+            subcnf = to_cnf(subclause)
+            clause = clause[:start] + subcnf + clause[end+1:]
+        if '<=>' in clause:
+            # convert biconditional to conjunction of two implications
+            p, q = clause.split('<=>')
+            p = p.strip()
+            q = q.strip()
+            cnf.append(f'({p} => {q}) & ({q} => {p})')
+        elif '=>' in clause:
+            # convert implication to disjunction
+            p, q = clause.split('=>')
+            p = p.strip()
+            q = q.strip()
+            if '&' in p:
+                # distribute disjunction over conjunction
+                literals = p.split('&')
+                literals = [literal.strip() for literal in literals]
+                cnf.append(f'(~({" & ".join(literals)}) | {q})')
             else:
-                new_literals.append(literal)
-        # Join the new literals with "or" and add parentheses
-        new_clause = "(" + " | ".join(new_literals) + ")"
-        new_clauses.append(new_clause)
-    # Join the new clauses with "and"
-    new_cnf = " & ".join(new_clauses)
-    return new_cnf
+                cnf.append(f'(~{p} | {q})')
+        elif '&' in clause:
+            # conjunction of literals
+            literals = clause.split('&')
+            for literal in literals:
+                literal = literal.strip()
+                cnf.append(literal)
+        elif '||' in clause:
+            # disjunction of literals
+            literals = clause.split('||')
+            disjunction = ' | '.join(literals)
+            cnf.append(f'({disjunction})')
+        else:
+            # single literal
+            cnf.append(clause)
+    return ' & '.join(cnf)
 
-cnf_str = "(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2"
-result = convert_cnf(cnf_str)
-print(result)
+# example usage
+sentence = 'p2=> p3; p3 => p1; c => e; b&e => f; f&g => h; p1=>d; p1&p3 => c; a; b; p2;'
+cnf = to_cnf(sentence)
+print(cnf)
