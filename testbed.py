@@ -27,7 +27,8 @@ def bccheck():
 def retecheck():
     filename = "test_HornKB.txt"
     kb, query = Parse.parse(filename)
-    result = Rete.check(kb, query)
+    rules, new_query = Parse.HFtoRB(kb, query)
+    result = Rete.check(rules, new_query)
     print(result)
     
 def testparse():
@@ -53,5 +54,5 @@ def hftorbcheck():
 #bccheck()
 #retecheck()
 #testparse()
-hftorbcheck()
+#hftorbcheck()
 #typecheck()
