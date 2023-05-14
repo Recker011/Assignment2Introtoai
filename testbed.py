@@ -1,7 +1,7 @@
-from TruthTable import TruthTable
-from ForwardChaining import ForwardChaining
-from BackwardChaining import BackwardChaining
-from Rete import Rete
+from Algorithms.TruthTable import TruthTable
+from Algorithms.ForwardChaining import ForwardChaining
+from Algorithms.BackwardChaining import BackwardChaining
+from Algorithms.Rete import Rete
 from Parse import Parse
 
 def ttcheck():

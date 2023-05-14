@@ -1,6 +1,6 @@
-from TruthTable import TruthTable
-from ForwardChaining import ForwardChaining
-from BackwardChaining import BackwardChaining
+from Algorithms.TruthTable import TruthTable
+from Algorithms.ForwardChaining import ForwardChaining
+from Algorithms.BackwardChaining import BackwardChaining
 from Parse import Parse
 import sys
 
