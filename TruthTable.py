@@ -4,7 +4,7 @@ class TruthTable:
 
     @staticmethod
     def check(kb, query):
-        symbols = list(set(re.findall(r'[a-z]+[0-9]*', kb)))
+        symbols = list(set(re.findall(r'[a-z]+[0-9]*', kb + query)))
         def evaluate(expression, values):
             for s in symbols:
                 expression = expression.replace(s, str(values[s]))
