@@ -4,3 +4,8 @@
 
 
         print(f'p: {p}, agenda: {agenda}, entailed: {entailed}, count: {count}')
+
+generickb_1
+((~a & c) | (~c & a) | (~d & c) | (~d & a)) & ((~a & d) | (~c & d) | (~c & a) | (~d & a))
+
+~d & (~g | ~f)
