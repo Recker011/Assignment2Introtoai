@@ -49,7 +49,7 @@ def hftorbcheck():
     print(rules)
     print(query)
     
-#ttcheck()
+ttcheck()
 #fccheck()
 #bccheck()
 #retecheck()
