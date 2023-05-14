@@ -1,6 +1,7 @@
 from TruthTable import TruthTable
 from ForwardChaining import ForwardChaining
 from BackwardChaining import BackwardChaining
+from Rete import Rete
 from Parse import Parse
 
 def ttcheck():
@@ -23,6 +24,12 @@ def bccheck():
     result = BackwardChaining.check(kb, query)
     print(result)
     
+def retecheck():
+    filename = "test_HornKB.txt"
+    kb, query = Parse.parse(filename)
+    result = Rete.check(kb, query)
+    print(result)
+    
 def testparse():
     filename = "test_HornKB.txt"
     kb, query = Parse.parse(filename)
@@ -34,8 +41,17 @@ def typecheck():
     kbtype = Parse.checktype(filename)
     print(kbtype)
     
-ttcheck()
+def hftorbcheck():
+    filename = "test_HornKB.txt"
+    kb, query = Parse.parse(filename)
+    rules, new_query = Parse.HFtoRB(kb, query)
+    print(rules)
+    print(query)
+    
+#ttcheck()
 #fccheck()
 #bccheck()
+#retecheck()
 #testparse()
+hftorbcheck()
 #typecheck()
