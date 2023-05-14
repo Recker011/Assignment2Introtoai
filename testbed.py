@@ -4,15 +4,17 @@ from BackwardChaining import BackwardChaining
 from Parse import Parse
 
 def ttcheck():
-    kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
-    query = 'd'
+    kb = '((~a & c) | (~c & a) | (~d & c) | (~d & a)) & ((~a & d) | (~c & d) | (~c & a) | (~d & a))'
+    query = '~d & (~g | ~f)'
     result = TruthTable.check(kb, query)
+    print(query)
     print(result)
     
 def fccheck():
     filename = "test_HornKB.txt"
     kb, query = Parse.parse(filename)
     result = ForwardChaining.check(kb, query)
+    print(query)
     print(result)
     
 def bccheck():
@@ -32,8 +34,8 @@ def typecheck():
     kbtype = Parse.checktype(filename)
     print(kbtype)
     
-#ttcheck()
+ttcheck()
 #fccheck()
 #bccheck()
 #testparse()
-typecheck()
+#typecheck()
