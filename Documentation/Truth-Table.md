@@ -1,5 +1,5 @@
-```
-# TruthTable
+
+# TruthTable Implementation
 
 ```python
 import re

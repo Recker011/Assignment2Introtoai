@@ -1,15 +1,62 @@
-The `ForwardChaining` class is a Python class that contains a single static method `check`. The purpose of this class is to implement the forward chaining algorithm for checking if a given query `q` is entailed by a given knowledge base `KB`.
+# Explanation of the Forward Chaining Implementation
 
-The `check` method takes in two arguments: `KB` and `q`. `KB` is a list of strings representing the clauses in the knowledge base. Each clause can either be a fact (e.g., `"A"`) or an implication (e.g., `"A & B => C"`). `q` is a list containing a single string representing the query.
+The `ForwardChaining` class is an implementation of a forward chaining algorithm for checking if a given `query` can be inferred from a given knowledge base `kb`. The class contains a single method, `check`, which takes two arguments: `kb`, which represents a knowledge base in the form of a list of strings representing facts and rules; and `q`, which represents a query in the form of a list containing a single string representing a fact to be checked.
 
-The method starts by initializing three data structures: a dictionary called `count`, a dictionary called `inferred`, and a list called `agenda`. The `count` dictionary maps each conclusion symbol in the knowledge base to the number of premises it has. The `inferred` dictionary maps each symbol in the knowledge base to a boolean value indicating whether it has been inferred to be true or not. The `agenda` list will contain the symbols that are known to be true and have not yet been processed.
+```python
+class ForwardChaining:
+    @staticmethod
+    def check(kb, q):
+        # Initialize the count of premises for each implication
+        count = {}
+        # Initialize the inferred dictionary
+        inferred = {}
+        # Initialize the agenda with known facts
+        agenda = []
+        for clause in kb:
+            # Check if the clause is an implication
+            if "=>" in clause:
+                # Split the clause into premise and conclusion
+                premise, conclusion = clause.split("=>")
+                # Count the number of premises
+                count[conclusion.strip()] = len(premise.split("&"))
+                inferred[conclusion.strip()] = False
+            else:
+                # Add the fact to the agenda
+                agenda.append(clause.strip())
+                inferred[clause.strip()] = True
+        # Initialize the entailed list
+        entailed = []
+        while agenda:
+            # Pop the first symbol from the agenda
+            p = agenda.pop(0)
+            # Add the symbol to the entailed list
+            entailed.append(p)
+            # Check if the symbol is the query
+            if p == q[0]:
+                return "YES: " + ", ".join(entailed)  # outputs YES and order of entailed facts
+            # For each implication in the kb
+            for clause in kb:
+                if "=>" in clause:
+                    premise, conclusion = clause.split("=>")
+                    # If p is one of the premises
+                    if p in premise.split("&"):
+                        # Decrease the count of premises for this implication
+                        count[conclusion.strip()] -= 1
+                        # If all premises are true
+                        if count[conclusion.strip()] == 0:
+                            # Add the conclusion to the agenda
+                            if not inferred[conclusion.strip()]:
+                                agenda.append(conclusion.strip())
+                                inferred[conclusion.strip()] = True
+        return "NO"
+```
 
-Next, the method populates these data structures by iterating over each clause in the knowledge base. For each clause that is an implication, it splits it into its premise and conclusion parts and updates the `count` and `inferred` dictionaries accordingly. For each clause that is a fact, it adds it to the `agenda` list and marks it as inferred in the `inferred` dictionary.
+The `check` method initializes three variables: `count`, which is a dictionary that keeps track of the number of premises for each implication in the knowledge base; `inferred`, which is a dictionary that keeps track of which facts have been inferred; and `agenda`, which is a list containing all known facts (i.e., strings that do not contain an implication symbol) from the knowledge base.
 
-After initializing these data structures, the method enters a while loop that continues until the `agenda` list is empty. In each iteration of this loop, it pops the first symbol from the agenda and adds it to an `entailed` list. It then checks if this symbol is equal to the query symbol. If it is, then this means that the query is entailed by the knowledge base. In this case, the method returns `"YES"` followed by a comma-separated list of the symbols in the `entailed` list.
+The method then enters a loop that continues until there are no more elements in the `agenda`. In each iteration of the loop, it pops the first element from the `agenda` and assigns it to variable `p`. It then checks if `p` matches the query (i.e., if it is equal to the first element of the `q` list) and, if it does, appends it to the list of entailed facts and returns `'YES'` along with those entailed facts.
 
-If the popped symbol is not equal to the query symbol, then the method proceeds to iterate over each implication in the knowledge base. For each such implication, it checks if the popped symbol is one of its premises. If it is, then it decreases its count in the `count` dictionary. If this count reaches zero, then this means that all its premises are known to be true and therefore its conclusion can be inferred to be true. In this case, if its conclusion has not already been inferred, then it adds it to the agenda and marks it as inferred in the `inferred` dictionary.
+If `p` does not match the query, it is added to the dictionary of inferred facts with a value of `True`. The method then loops over all implications in the knowledge base and checks their premises by splitting them at any conjunction symbols (`'&'`). If all premises are inferred (i.e., present in the `inferred` dictionary with a value of `True`), it decreases their count in the `count` dictionary. If all premises for an implication are satisfied (i.e., if its count reaches 0), its conclusion is added to the `agenda` if it has not already been inferred.
 
-If none of these steps caused an early return of `"YES"`, then this means that after processing all known facts and inferring all possible new facts, the query symbol was still not entailed by the knowledge base. In this case, the method returns `"NO"`.
+If the loop completes without finding a match for the query, the method returns `'NO'`.
 
-In summary, this class implements a simple forward chaining algorithm for checking if a given query is entailed by a given knowledge base. It does this by starting with known facts and iteratively inferring new facts until no more new facts can be inferred or until the query symbol is inferred to be true. Finally, it returns whether or not the query was entailed along with a list of all symbols that were entailed by the knowledge base.
+This implementation of the forward chaining algorithm uses dictionaries to keep track of satisfied rules and inferred facts and loops over all implications in the knowledge base in each iteration of its main loop to check their premises and conclusions. It infers new facts from the given knowledge base until either the query is found or there are no more facts to infer. If the query is found, it returns `'YES'` along with the entailed facts; otherwise, it returns `'NO'`.

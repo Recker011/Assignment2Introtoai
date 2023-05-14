@@ -1,19 +1,71 @@
-The `BackwardChaining` class is a Python class that contains two static methods: `check` and `BC`. The purpose of this class is to implement the backward chaining algorithm for checking if a given query `q` is entailed by a given knowledge base `KB`.
+# Explanation of the Backward Chaining Implementation
 
-The `check` method takes in two arguments: `KB` and `q`. `KB` is a list of strings representing the clauses in the knowledge base. Each clause can either be a fact (e.g., `"A"`) or an implication (e.g., `"A & B => C"`). `q` is a list containing a single string representing the query.
+The `BackwardChaining` class is an implementation of a backward chaining algorithm for checking if a given `query` can be inferred from a given knowledge base `KB`. The class contains two methods: `check` and `BC`.
 
-The method starts by initializing two data structures: a dictionary called `inferred` and a list called `entailed`. The `inferred` dictionary maps each symbol in the knowledge base to a boolean value indicating whether it has been inferred to be true or not. The `entailed` list will contain the symbols that are entailed by the knowledge base in the order in which they were inferred.
+## The `check` Method
 
-Next, the method calls the recursive `BC` method with the knowledge base, query, inferred dictionary, and entailed list as arguments. The result of this call is stored in a variable called `result`.
+```python
+@staticmethod
+def check(KB, q):
+    # Initialize the inferred dictionary
+    inferred = {}
+    for clause in KB:
+        if "=>" in clause:
+            premise, conclusion = clause.split("=>")
+            inferred[conclusion.strip()] = False
+        else:
+            inferred[clause.strip()] = False
+    # Initialize the entailed list
+    entailed = []
+    # Call the recursive BC function
+    result = BackwardChaining.BC(KB, q[0], inferred, entailed)
+    if result:
+        return "YES: " + ", ".join(entailed)  # outputs the YES and order of entailed facts
+    else:
+        return "NO"
+```
 
-If `result` is `True`, then this means that the query is entailed by the knowledge base. In this case, the method returns a string `"YES"` followed by a comma-separated list of the symbols in the `entailed` list. If `result` is `False`, then this means that the query is not entailed by the knowledge base. In this case, the method returns `"NO"`.
+The `check` method takes two arguments: `KB`, which represents a knowledge base in the form of a list of strings representing facts and rules; and `q`, which represents a query in the form of a list containing a single string representing a fact to be checked.
 
-The `BC` method takes in four arguments: `KB`, `q`, `inferred`, and `entailed`. This method implements the recursive backward chaining algorithm. It starts by checking if the query symbol `q` is already known to be true (i.e., if it is present in the `inferred` dictionary with a value of `True`). If it is, then the method immediately returns `True`.
+The method initializes two variables: `inferred`, which is a dictionary that keeps track of which facts have been inferred; and `entailed`, which is an empty list that will keep track of the order in which facts are entailed.
 
-If the query symbol is not already known to be true, then the method proceeds to find all implications in the knowledge base that have `q` as their conclusion. For each such implication, it splits it into its premise and conclusion parts and checks if all premises are true. It does this by recursively calling itself on each premise symbol.
+The method then calls the recursive `BC` method with the knowledge base, the query, the `inferred` dictionary, and the `entailed` list as arguments. If the result of this call is `True`, it returns `'YES'` along with the entailed facts; otherwise, it returns `'NO'`.
 
-If all premises of an implication are found to be true, then this means that its conclusion (i.e., the query symbol) can be inferred to be true. In this case, the method adds the query symbol to the `entailed` list, marks it as inferred in the `inferred` dictionary, and returns `True`.
+## The `BC` Method
 
-If none of the implications with `q` as their conclusion have all their premises true, then this means that `q` cannot be inferred to be true from the knowledge base. In this case, the method returns `False`.
+```python
+def BC(KB, q, inferred, entailed):
+    # Check if the query is already known to be true
+    if inferred[q]:
+        return True
+    # Find all implications with q as the conclusion
+    implications = [clause for clause in KB if "=>" in clause and clause.split("=>")[1].strip() == q]
+    for implication in implications:
+        # Split the implication into premise and conclusion
+        premise, conclusion = implication.split("=>")
+        # Check if all premises are true
+        premises = premise.split("&")
+        all_true = True
+        for p in premises:
+            # Recursively call BC on each premise
+            if not BackwardChaining.BC(KB, p.strip(), inferred, entailed):
+                all_true = False
+                break
+        # If all premises are true
+        if all_true:
+            # Add q to the entailed list and mark it as inferred
+            entailed.append(q)
+            inferred[q] = True
+            return True
+    return False
+```
 
-In summary, this class implements a simple backward chaining algorithm for checking if a given query is entailed by a given knowledge base. It does this by recursively checking if all premises of implications with the query as their conclusion are true. If they are, then it infers that the query is also true and adds it to an entailed list. Finally, it returns whether or not the query was entailed along with a list of all symbols that were entailed by the knowledge base.
+The `BC` method takes four arguments: `KB`, which represents a knowledge base in the form of a list of strings representing facts and rules; `q`, which represents a query in the form of a string representing a fact to be checked; `inferred`, which is a dictionary that keeps track of which facts have been inferred; and `entailed`, which is a list that keeps track of the order in which facts are entailed.
+
+The method first checks if the query is already known to be true (i.e., present in the `inferred` dictionary with a value of `True`) and returns `True` if it is. If it is not already known to be true, it finds all implications in the knowledge base with the query as their conclusion and loops over them.
+
+For each implication, it splits it into its premise and conclusion and checks if all premises are true by splitting them at any conjunction symbols (`'&'`) and recursively calling itself on each one. If all premises are true (i.e., if all recursive calls return `True`), it adds the query to the list of entailed facts, marks it as inferred in the `inferred` dictionary with a value of `True`, and returns `True`.
+
+If none of the implications with the query as their conclusion have all true premises (i.e., if none of them cause the method to return early), it returns `False`.
+
+This implementation of the backward chaining algorithm uses recursion to check if a given query can be inferred from a given knowledge base. It starts with the query and works backward by finding implications with that query as their conclusion and checking their premises until either it finds that all premises for an implication are true or there are no more implications to check. If it finds that all premises for an implication are true, it returns `'YES'` along with the entailed facts; otherwise, it returns `'NO'`.
