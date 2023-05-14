@@ -12,38 +12,38 @@ def ttcheck():
     print(result)
     
 def fccheck():
-    filename = "test_HornKB.txt"
+    filename = "Test-Files/test_HornKB.txt"
     kb, query = Parse.parse(filename)
     result = ForwardChaining.check(kb, query)
     #print(query)
     print(result)
     
 def bccheck():
-    filename = "test_HornKB.txt"
+    filename = "Test-Files/test_HornKB.txt"
     kb, query = Parse.parse(filename)
     result = BackwardChaining.check(kb, query)
     print(result)
     
 def retecheck():
-    filename = "test_HornKB.txt"
+    filename = "Test-Files/test_HornKB.txt"
     kb, query = Parse.parse(filename)
     rules, new_query = Parse.HFtoRB(kb, query)
     result = Rete.check(rules, new_query)
     print(result)
     
 def testparse():
-    filename = "test_HornKB.txt"
+    filename = "Test-Files/test_HornKB.txt"
     kb, query = Parse.parse(filename)
     print('KB:', kb)
     print('Query:', query)
     
 def typecheck():
-    filename = "test_genericKB.txt"
+    filename = "Test-Files/test_genericKB.txt"
     kbtype = Parse.checktype(filename)
     print(kbtype)
     
 def hftorbcheck():
-    filename = "test_HornKB.txt"
+    filename = "Test-Files/test_HornKB.txt"
     kb, query = Parse.parse(filename)
     rules, new_query = Parse.HFtoRB(kb, query)
     print(rules)
