@@ -27,3 +27,18 @@ class Parse:
             return "HC"
         else:
             return "GK"
+    
+    @staticmethod
+    def HFtoRB(KB, query):
+        rules = []
+        for clause in KB:
+            if '=>' in clause:
+                antecedent, consequent = clause.split('=>')
+                antecedents = antecedent.split('&')
+                rule = f'{"&".join(antecedents)}=>{consequent}'
+                rules.append(rule)
+            else:
+                rules.append(clause)
+        return rules, query
+
+
