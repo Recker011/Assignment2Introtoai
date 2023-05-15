@@ -2,11 +2,12 @@ from Algorithms.TruthTable import TruthTable
 from Algorithms.ForwardChaining import ForwardChaining
 from Algorithms.BackwardChaining import BackwardChaining
 from Algorithms.Rete import Rete
+from Algorithms.WalkSAT import WalkSAT
 from Parse import Parse
 
 def ttcheck():
-    kb = '((~a & c) | (~c & a) | (~d & c) | (~d & a)) & ((~a & d) | (~c & d) | (~c & a) | (~d & a))'
-    query = '~d & (~g | ~f)'
+    kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
+    query = 'd'
     result = TruthTable.check(kb, query)
     #print(query)
     print(result)
@@ -19,8 +20,12 @@ def fccheck():
     print(result)
     
 def bccheck():
-    filename = "Test-Files/test_HornKB.txt"
-    kb, query = Parse.parse(filename)
+    # filename = "Test-Files/test_HornKB.txt"
+    # kb, query = Parse.parse(filename)
+    # print(kb)
+    # print(query)
+    kb = ['p2=>p3', 'p3=>p1', 'c=>e', 'b&e=>f', 'f&g=>h', 'p1=>d', 'p1&p3=>c', 'a', 'b', 'p2']
+    query = ['d']
     result = BackwardChaining.check(kb, query)
     print(result)
     
@@ -49,10 +54,17 @@ def hftorbcheck():
     print(rules)
     print(query)
     
-ttcheck()
+def walksatcheck():
+    kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
+    query = 'd'
+    print(WalkSAT.check(kb, query))
+    
+
+#ttcheck()
 #fccheck()
-#bccheck()
+bccheck()
 #retecheck()
 #testparse()
 #hftorbcheck()
 #typecheck()
+#walksatcheck()

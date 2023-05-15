@@ -1,19 +1,22 @@
 import re
 
 class TruthTable:
-    
     @staticmethod
     def check(kb, query):
         # Extract all symbols from the knowledge base and query
         symbols = list(set(re.findall(r'[a-z]+[0-9]*', kb + query)))
-        
+
         def evaluate(expression, values):
             # Replace symbols in the expression with their corresponding values
             for s in symbols:
                 expression = expression.replace(s, str(values[s]))
             # Evaluate the resulting expression
-            return eval(expression)
-        
+            try:
+                return eval(expression)
+            except Exception as e:
+                print(f"An error occurred while evaluating the expression: {e}")
+                return False
+
         models = 0
         # Iterate over all possible combinations of truth values for the symbols
         for i in range(2**len(symbols)):
