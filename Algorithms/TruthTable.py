@@ -28,7 +28,7 @@ class TruthTable:
             values = {symbols[j]: (i >> j) & 1 for j in range(len(symbols))}
             # Check if the knowledge base is true with the current truth values
             if evaluate(kb, values):
-                # Check if the query is also true with the current truth values
+                # Check if the query is also true with the current truth value
                 if evaluate(query, values):
                     models += 1
                 else:
