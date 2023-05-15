@@ -10,6 +10,10 @@ class TruthTable:
             # Replace symbols in the expression with their corresponding values
             for s in symbols:
                 expression = expression.replace(s, str(values[s]))
+            # Replace ~ with not and add a space after it
+            expression = expression.replace('~', 'not ')
+            # Replace & with and and | with or
+            expression = expression.replace('&', ' and ').replace('|', ' or ')
             # Evaluate the resulting expression
             try:
                 return eval(expression)
