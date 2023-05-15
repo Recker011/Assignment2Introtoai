@@ -1,7 +1,5 @@
-from Algorithms.TruthTable import TruthTable
-from Algorithms.ForwardChaining import ForwardChaining
-from Algorithms.BackwardChaining import BackwardChaining
 from Parse import Parse
+from Sentence import Sentence
 import sys
 
 def main():
@@ -9,28 +7,27 @@ def main():
         print("Usage: python iengine.py [method] [filename]")
         sys.exit(1)
 
-    method = sys.argv[1]
+    method = sys.argv[1].lower()
     filename = sys.argv[2]
-    
-    kbtype = Parse.checktype(filename)
-    
-    if kbtype == 'HC':
-        kb, query = Parse.parse(filename)
-    elif kbtype == 'GK':
-        # put the kb and query from sentence parsing from the sentence class i legit have no clue how that works i am mortally scared of messing with that class
-        pass
-    
-    
 
-    if method == 'TT':
-        result = TruthTable.check(kb, query)
-    elif method == 'FC':
-        result = ForwardChaining.check(kb, query)
-    elif method == 'BC':
-        result = BackwardChaining.check(kb, query)
-    else:
-        print("Invalid method. Method must be TT, FC or BC.")
+    algorithms = {
+        'tt': ('Sentence', 'TruthTable'),
+        'fc': ('Parse', 'ForwardChaining'),
+        'bc': ('Parse', 'BackwardChaining'),
+        'rete': ('Parse', 'Rete'),
+        'walksat': ('Sentence', 'WalkSAT')
+    }
+
+    if method not in algorithms:
+        print("Invalid method. Method must be TT, FC, BC, RETE or WALKSAT.")
         sys.exit(1)
+
+    parse_module, algorithm_module = algorithms[method]
+    parse_module = globals()[parse_module]
+    algorithm_module = __import__('Algorithms.' + algorithm_module, fromlist=[algorithm_module])
+    
+    kb, query = parse_module.parse(filename)
+    result = algorithm_module.check(kb, query)
 
     print(result)
 

@@ -1,6 +1,7 @@
 import random
 
 class WalkSAT:
+    
     @staticmethod
     def check(kb, query, max_flips=1000, p=0.5):
         # Convert KB and query to CNF
@@ -68,7 +69,7 @@ class WalkSAT:
             model[symbol] = not model[symbol]
         return 'NO'
 
-# Example usage
-kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
-query = 'd'
-print(WalkSAT.check(kb, query))
+# # Example usage
+# kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
+# query = 'd'
+# print(WalkSAT.check(kb, query))

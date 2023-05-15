@@ -209,6 +209,7 @@ class Sentence:
             elif len(rhs.clause) > 1:
                 rhs.parsesentence()
                 if rhs.connective == '&':
+<<<<<<< HEAD
                     self.clause = '({}||{})&({}||{})'.format(
                         lhs.clause, rhs.subclauses[0].clause, lhs.clause, rhs.subclauses[1].clause)
 
@@ -239,3 +240,10 @@ print(sentence.clause)
 
 # '(a<=>(c=>~d))&b&(b=>a)'
 # 'a<=>(b<=>c)'
+=======
+                    self.clause = '(({}||{})&({}||{}))'.format(lhs.clause, rhs.subclauses[0].clause, lhs.clause, rhs.subclauses[1].clause)
+                    
+    def parse(filename):
+        
+        pass
+>>>>>>> cc9a825e8f0b9fe95dfcf186e7b07475c46d0e1f
