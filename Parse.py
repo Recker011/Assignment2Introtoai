@@ -21,14 +21,21 @@ class Parse:
         return True
 
     @staticmethod
-    def checktype(filename):
+    def checkfiletype(filename):
         tell, _ = Parse.parse(filename)
         if Parse.is_horn_clause(tell):
             return "HC"
         else:
             return "GK"
-    
+        
     @staticmethod
+    def checkkbtype(kb):
+        if Parse.is_horn_clause(kb):
+            return "HC"
+        else:
+            return "GK"
+    
+    @staticmethod # most likely fucking useless
     def HFtoRB(KB, query):
         rules = []
         for clause in KB:
