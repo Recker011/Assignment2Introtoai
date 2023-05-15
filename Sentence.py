@@ -208,3 +208,7 @@ class Sentence:
                 rhs.parsesentence()
                 if rhs.connective == '&':
                     self.clause = '(({}||{})&({}||{}))'.format(lhs.clause, rhs.subclauses[0].clause, lhs.clause, rhs.subclauses[1].clause)
+                    
+    def parse(filename):
+        
+        pass
