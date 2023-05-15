@@ -60,9 +60,9 @@ def walksatcheck():
     print(WalkSAT.check(kb, query))
     
 
-ttcheck()
+#ttcheck()
 #fccheck()
-#bccheck()
+bccheck()
 #retecheck()
 #testparse()
 #hftorbcheck()
