@@ -10,6 +10,10 @@ class TruthTable:
             # Replace symbols in the expression with their corresponding values
             for s in symbols:
                 expression = expression.replace(s, str(values[s]))
+            # Replace ~ with not and add a space after it
+            expression = expression.replace('~', 'not ')
+            # Replace & with and and | with or
+            expression = expression.replace('&', ' and ').replace('|', ' or ')
             # Evaluate the resulting expression
             try:
                 return eval(expression)
@@ -24,9 +28,16 @@ class TruthTable:
             values = {symbols[j]: (i >> j) & 1 for j in range(len(symbols))}
             # Check if the knowledge base is true with the current truth values
             if evaluate(kb, values):
-                # Check if the query is also true with the current truth values
+                # Check if the query is also true with the current truth value
                 if evaluate(query, values):
                     models += 1
                 else:
                     return 'NO'
         return f'YES:{models}'
+    
+    
+# kb = '(~a|~c|~d)&(a|c)&(a|d)&b&(~b|a)'
+# query = 'd'
+# result = TruthTable.check(kb, query)
+
+# print(result)

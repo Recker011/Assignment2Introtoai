@@ -6,8 +6,8 @@ from Algorithms.WalkSAT import WalkSAT
 from Parse import Parse
 
 def ttcheck():
-    kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
-    query = 'd'
+    kb = '(~a|~c|~d)&(a|c)&(a|d)&b&(~b|a)&c&(~f|g)'
+    query = '~d&(g|~f)'
     result = TruthTable.check(kb, query)
     #print(query)
     print(result)
@@ -60,9 +60,9 @@ def walksatcheck():
     print(WalkSAT.check(kb, query))
     
 
-#ttcheck()
+ttcheck()
 #fccheck()
-bccheck()
+# bccheck()
 #retecheck()
 #testparse()
 #hftorbcheck()

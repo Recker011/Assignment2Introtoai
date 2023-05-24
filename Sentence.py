@@ -1,5 +1,5 @@
-import re
-
+from Parse import Parse
+from Algorithms.TruthTable import TruthTable
 
 class Sentence:
     def __init__(self, clause, connective=None):
@@ -29,7 +29,7 @@ class Sentence:
                 connectiveind = i
             elif ((self.clause[i] == '|') and bracketcounter == 0) and connectiveind < 0:
                 connectiveind = i
-            elif (self.clause[i] == '~') and self.clause[i+1] == '(' and self.clause[-1] == ')' or len(self.clause) == 2:
+            elif (self.clause[i] == '~') and self.clause[i+1] == '(' and self.clause[-1] == ')' and connectiveind < 0 or len(self.clause) == 2:
                 connectiveind = i
 
         #Remove negligible brackets
@@ -209,7 +209,6 @@ class Sentence:
             elif len(rhs.clause) > 1:
                 rhs.parsesentence()
                 if rhs.connective == '&':
-<<<<<<< HEAD
                     self.clause = '({}||{})&({}||{})'.format(
                         lhs.clause, rhs.subclauses[0].clause, lhs.clause, rhs.subclauses[1].clause)
 
@@ -230,20 +229,24 @@ class Sentence:
                 if rhs.connective == '||':
                     self.clause = '({}||{}||{})'.format(
                         lhs.clause, rhs.subclauses[0].clause, rhs.subclauses[1].clause)
-                    
-
-sentence = Sentence('(a<=>(c=>~d))&b&(b=>a)')
-
-sentence = sentence.toCNF()
-
-print(sentence.clause)
-
-# '(a<=>(c=>~d))&b&(b=>a)'
-# 'a<=>(b<=>c)'
-=======
-                    self.clause = '(({}||{})&({}||{}))'.format(lhs.clause, rhs.subclauses[0].clause, lhs.clause, rhs.subclauses[1].clause)
-                    
-    def parse(filename):
+    @staticmethod                
+    def parse(file):
+        tell, ask = Parse.parse(file)
         
-        pass
->>>>>>> cc9a825e8f0b9fe95dfcf186e7b07475c46d0e1f
+        tell = con(tell)
+        ask = con(ask)
+        
+        return tell, ask
+    
+def con(insert):
+    i = 0
+    
+    while i < len(insert):
+        clause = Sentence(insert[i])
+        insert[i] = clause.toCNF().clause
+        i += 1
+        
+    final = '&'.join(insert)
+    final = final.replace('||', '|')
+    
+    return final  
