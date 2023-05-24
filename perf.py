@@ -38,6 +38,7 @@ def import_test_file():
             file_content = f.read()
         test_file_text.delete("1.0", tk.END)
         test_file_text.insert(tk.END, file_content)
+        filename = os.path.relpath(filename)
         test_file_text.insert(tk.END, f"\n\nFilename: {filename}")
 
 def clear_performance():
