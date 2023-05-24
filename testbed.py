@@ -3,6 +3,8 @@ from Algorithms.ForwardChaining import ForwardChaining
 from Algorithms.BackwardChaining import BackwardChaining
 from Algorithms.Rete import Rete
 from Algorithms.WalkSAT import WalkSAT
+from Algorithms.Resolution import Resolution
+from Sentence import Sentence
 from Parse import Parse
 
 def ttcheck():
@@ -63,11 +65,19 @@ def walksatcheck():
     kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
     query = 'd'
     print(WalkSAT.check(kb, query))
+    
+def sentencecheck():
+    filename = "Test-Files/test_HornKB.txt"
+    kb, query = Sentence.parse(filename)
+    print(f"KB:{kb}\nQuery:{query}")
 
-
+def resolutioncheck():
+    kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
+    query = 'd'
+    print(Resolution.check(kb, query))
 
 #ttcheck()
-fccheck()
+#fccheck()
 #bccheck()
 #retecheck()
 #testparse()
@@ -75,3 +85,5 @@ fccheck()
 #typecheck()
 #walksatcheck()
 #checkfiletype()
+#sentencecheck()
+resolutioncheck()
