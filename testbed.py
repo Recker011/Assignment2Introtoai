@@ -76,10 +76,10 @@ def resolutioncheck():
     query = 'd'
     print(Resolution.check(kb, query))
 
-ttcheck()
+#ttcheck()
 #fccheck()
 #bccheck()
-#retecheck()
+retecheck()
 #testparse()
 #hftorbcheck()
 #typecheck()

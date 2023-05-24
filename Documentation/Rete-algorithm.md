@@ -12,7 +12,7 @@ The Rete algorithm is designed to sacrifice memory for increased speed. In most 
 
 In comparison to forward chaining, which is another method used in rule-based systems to determine which rules should fire based on known facts, the Rete algorithm provides a more efficient implementation by building and using a network of nodes that correspond to patterns occurring in the left-hand-side of rules
 
-The code defines a `Rete` class that can check if a given `query` can be inferred from a given knowledge base `KB` using forward chaining. The class contains four methods: `implies`, `entails`, `is_fact`, and `check`.
+Our implementationf defines a `Rete` class that can check if a given `query` can be inferred from a given knowledge base `KB` using forward chaining. The class contains four methods: `implies`, `entails`, `is_fact`, and `check`.
 
 ## The `implies` Method
 

@@ -20,6 +20,21 @@ class Rete:
         agenda = [fact for fact in KB if Rete.is_fact(fact)]
         inferred = {}
         entailed_facts = []
+        kbtype = Parse.checkkbtype(KB)
+        if kbtype == "HC":
+            # Initialize network with facts from KB
+            network = {}
+            for fact in KB:
+                premises = Rete.entails(fact)
+                for premise in premises:
+                    if premise not in network:
+                        network[premise] = []
+                    network[premise].append(fact)
+
+            # Initialize agenda with facts from KB
+            agenda = [fact for fact in KB if Rete.is_fact(fact)]
+            inferred = {}
+            entailed_facts = []
 
         while agenda:
             p = agenda.pop(0)
@@ -31,12 +46,15 @@ class Rete:
 
             inferred[p] = True
 
-            for fact in KB:
-                premises = Rete.entails(fact)
-                # If all premises are inferred, add the implication to entailed facts and agenda
-                if all(inferred.get(premise) for premise in premises):
-                    q = Rete.implies(fact)
-                    if q and not inferred.get(q):
-                        entailed_facts.append(q)
-                        agenda.append(q)
-        return 'NO'
+            if p in network:
+                for fact in network[p]:
+                    premises = Rete.entails(fact)
+                    # If all premises are inferred, add the implication to entailed facts and agenda
+                    if all(inferred.get(premise) for premise in premises):
+                        q = Rete.implies(fact)
+                        if q and not inferred.get(q):
+                            entailed_facts.append(q)
+                            agenda.append(q)
+            return 'NO'
+        else:
+            return "The Knowledge Base is not in Horn Clause format"
