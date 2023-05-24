@@ -97,7 +97,7 @@ If there are no connectives outside of brackets, it means that all literals are 
 
 Uses the connective index to give the sentence an appropriate connective property. Also creates subclauses that are on the left and right hand side of the connective and initializes them as `Sentence` objects.
 
-# Method : toCNF
+## Method : toCNF
 
 ```python
 
@@ -194,7 +194,7 @@ Before joining the two clauses together, the correct format is assessed. If both
 
 If the connective is a `disjunction`, the process is very similar to when it is a `conjunction`. The subclauses are taken separately and converted to a normal form, then combined together after assessing the right format for parentheses.
 
-# Method : bicon_elim
+## Method : bicon_elim
 
 ```python
         def bicon_elim(self):
@@ -208,7 +208,7 @@ If the connective is a `disjunction`, the process is very similar to when it is 
 
 This method takes a clause and applies the logical equivalence rule of `biconditional elimination`, which states that an `equivalence` of two clauses is simply the `conjunction of the implication of the two clauses`. (example shown in code block)
 
-# Method : implication_elim
+## Method : implication_elim
 
 ```python
         def implication_elim(self):
@@ -222,7 +222,7 @@ This method takes a clause and applies the logical equivalence rule of `bicondit
 
 This method takes a clause and applies the logical equivalence rule of `implication elimination`, which states that the `implication` of two clauses is their `disjunction where the first clause is a negation`. (example shown in code block)
 
-# Method : deMorgan
+## Method : deMorgan
 
 ```python
        def deMorgan(self):
@@ -240,7 +240,7 @@ This method takes a clause and applies the logical equivalence rule of `implicat
 
 This method applies the `deMorgan` rule of logical equivalence, which states that you can move a `negation` that encompasses a clause within parentheses inwards to give the `negated conjunction/disjunction of the literals within that clause`. If the connective is originally a `conjunction`, then it is changed to a `disjunction`, and vice versa.
 
-# Method : doublenegation_elim
+## Method : doublenegation_elim
 
 ```python
         def doublenegation_elim(self):
@@ -253,7 +253,7 @@ This method applies the `deMorgan` rule of logical equivalence, which states tha
 
 This method applies the `double-negation` rule of logical equivalence, which states that two negations stacked on top of each other will cancel out and result in no negation of the literal.
 
-# Method : distributivity_conjunction
+## Method : distributivity_conjunction
 
 ```python
         def distributivity_conjunction(self):
@@ -278,7 +278,7 @@ This method applies the `double-negation` rule of logical equivalence, which sta
 
 This method applies the `distributivity of conjunction` rule of logical equivalence, which states that if there is a `disjunction of conjunction of literals`, the `conjunction can be moved outwards` by `creating a conjunction of disjunctions of the same literals`. This is done in the method by first using the `parsesentence` method to get the two sides of the disjunction, then checking which side has the single literal.
 
-# Method : associativity_disjunction
+## Method : associativity_disjunction
 
 ```python
         def associativity_disjunction(self):
