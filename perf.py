@@ -27,7 +27,7 @@ def run_script(method):
         end_time = time.time()
         elapsed_time = end_time - start_time
 
-        messagebox.showinfo("Result", f"Result: {result}\nTime taken: {elapsed_time:.2f} seconds")
+        #messagebox.showinfo("Result", f"Result: {result}\nTime taken: {elapsed_time:.2f} seconds")
         performance_text.insert(tk.END, f"Method: {method.upper()}\nResult: {result}\n\n")
 
 def import_test_file():

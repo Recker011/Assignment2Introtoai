@@ -27,8 +27,9 @@ class BackwardChaining:
     @staticmethod
     def BC(KB, q, inferred, entailed):
         # Check if the query is already known to be true or if it's a fact in the KB
-        if inferred[q] or q in KB:
-            return True
+        if q in inferred:
+            if inferred[q] or q in KB:
+                return True
         # Find all implications with q as the conclusion
         implications = [clause for clause in KB if "=>" in clause and clause.split("=>")[1].strip() == q]
         for implication in implications:
@@ -49,14 +50,3 @@ class BackwardChaining:
                 inferred[q] = True
                 return True
         return False
-
-# The kbtype is recognized with this function
-
-@staticmethod
-def checkkbtype(kb):
-    if Parse.is_horn_clause(kb):
-        return "HC"
-    else:
-        return "GK"
-
-# This is a static method in the Parse class 
