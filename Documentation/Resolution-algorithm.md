@@ -16,6 +16,14 @@ The resolution algorithm works for all knowledge bases instead of simply horn cl
 
 ```
 
+Here is an example of how to call the `check` method:
+
+```python
+
+    result = Resolution.check(kb,query)
+
+```
+
 The check method takes two parameters `kb` and `query` which is the knowledge base and query respectively. The parentheses of the knowledge base, which is in a conjunctive normal form, are removed and the clauses are split by conjunctions to give a list of clauses that the knowledge base is comprised of. The [`negation`](#method--negation) of the query is then added to the set of clauses for `proof by contradiction`.
 
 ```python
