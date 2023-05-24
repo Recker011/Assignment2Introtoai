@@ -4,7 +4,7 @@ The resolution algorithm works by taking a conjunction of clauses in the `Conjun
 
 The resolution algorithm works for all knowledge bases instead of simply horn clauses but works in exponential time, however it is far more expressive as well.
 
-# Method : check
+## Method : check
 
 ```python
 
@@ -55,7 +55,7 @@ Each pair of clauses is resolved against each other. If there is a `0 in the lis
 
 The `clauses in the union` are added to the `original set of clauses` if they are not already there.
 
-# Method : resolve
+## Method : resolve
 
 ```python
 
@@ -82,7 +82,7 @@ The `clauses in the union` are added to the `original set of clauses` if they ar
 
 An empty list `resolvents` is created. The individual literals of the pair of clauses is obtained using the [`getliterals`](#method--getliterals) method. Each literal is compared against each other to see if they are `complimentary` and are then removed from the list of literals. If there are `no literals left` in the list, then the `contradiction is proven` and a `0` is returned. If the lsit is not empty, then the literals are `added to the list of resolvents` as a disjunction using the [`association`](#method--association) method and the `resolvents are returned`.
 
-# Method : getliterals
+## Method : getliterals
 
 ```python
 
@@ -94,7 +94,7 @@ An empty list `resolvents` is created. The individual literals of the pair of cl
 
 Gets the `individual literals` of the clause provided by `splitting them by disjunction`.
 
-# Method : association
+## Method : association
 
 ```python
 
@@ -106,7 +106,7 @@ Gets the `individual literals` of the clause provided by `splitting them by disj
 
 Returns the `disjunction of literals` from a provided list.
 
-# Method : negation
+## Method : negation
 
 ```python
 
