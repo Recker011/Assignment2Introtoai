@@ -14,7 +14,7 @@ class Sentence:
 
 The `Sentence` class allows you to create sentences that comprise of a clause, a connective and subclauses which are clauses separated by the main connective. Defining a sentence this way will make it possible to separate smaller clauses from the larger sentence and apply logical equivalence techniques at a smaller scale before combining them at the end.
 
-# Method : parsesentence
+## Method : parsesentence
 
 ```python
         bracketcounter = 0
