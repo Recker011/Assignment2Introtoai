@@ -1,4 +1,0 @@
-TELL
-p => q; ~q;
-ASK
-p
