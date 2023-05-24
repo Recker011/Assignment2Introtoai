@@ -56,7 +56,7 @@ def association(literals):
 
 def negation(query):
     if len(query) == 1:
-        return '~' + query
+        return ['~' + query]
     elif len(query) == 2:
         return query[1]
     else:
@@ -70,6 +70,12 @@ def negation(query):
 def revert(clause):
     return clause.replace('|', '||')
     
+    
 
+kb, query = Sentence.parse('Test-Files/test_HornKB.txt')
+
+a = Resolution.check(kb, query)
+
+print(a)
 
 
