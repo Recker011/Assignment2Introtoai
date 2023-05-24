@@ -1,3 +1,5 @@
+from Parse import Parse
+
 class Rete:
     @staticmethod
     def implies(fact):
