@@ -6,8 +6,8 @@ from Algorithms.WalkSAT import WalkSAT
 from Parse import Parse
 
 def ttcheck():
-    kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
-    query = '~d'
+    kb = '((~a & c) | (~c & a) | (~d & c) | (~d & a)) & ((~a & d) | (~c & d) | (~c & a) | (~d & a))'
+    query = '~d & (~g | ~f)'
     result = TruthTable.check(kb, query)
     #print(query)
     print(result)
@@ -20,12 +20,12 @@ def fccheck():
     print(result)
     
 def bccheck():
-    # filename = "Test-Files/test_HornKB.txt"
-    # kb, query = Parse.parse(filename)
+    filename = "Test-Files/test_HornKB.txt"
+    kb, query = Parse.parse(filename)
     # print(kb)
     # print(query)
-    kb = ['p2=>p3', 'p3=>p1', 'c=>e', 'b&e=>f', 'f&g=>h', 'p1=>d', 'p1&p3=>c', 'a', 'b', 'p2']
-    query = ['d']
+    # kb = ['p2=>p3', 'p3=>p1', 'c=>e', 'b&e=>f', 'f&g=>h', 'p1=>d', 'p1&p3=>c', 'a', 'b', 'p2']
+    # query = ['d']
     result = BackwardChaining.check(kb, query)
     print(result)
     
@@ -43,9 +43,14 @@ def testparse():
     print('Query:', query)
     
 def typecheck():
-    filename = "Test-Files/test_genericKB.txt"
-    kbtype = Parse.checktype(filename)
+    kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
+    kbtype = Parse.checkkbtype(kb)
     print(kbtype)
+
+def checkfiletype():
+    filename = 'Test-Files/test_HornKB.txt'
+    print(Parse.checkfiletype(filename))
+    
     
 def hftorbcheck():
     filename = "Test-Files/test_HornKB.txt"
@@ -58,13 +63,15 @@ def walksatcheck():
     kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
     query = 'd'
     print(WalkSAT.check(kb, query))
-    
 
-#ttcheck()
+
+
+ttcheck()
 #fccheck()
-bccheck()
+#bccheck()
 #retecheck()
 #testparse()
 #hftorbcheck()
 #typecheck()
 #walksatcheck()
+#checkfiletype()

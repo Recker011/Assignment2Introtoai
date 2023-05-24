@@ -1,7 +1,15 @@
-from Parse import Parse
-from Sentence import Sentence
 import sys
+from Algorithms.TruthTable import TruthTable
+from Algorithms.ForwardChaining import ForwardChaining
+from Algorithms.BackwardChaining import BackwardChaining
+from Algorithms.Rete import Rete
+from Algorithms.WalkSAT import WalkSAT
+from Sentence import Sentence
+from Parse import Parse
+#from KB import KB
 
+
+# Main function
 def main():
     if len(sys.argv) != 3:
         print("Usage: python iengine.py [method] [filename]")
@@ -10,24 +18,28 @@ def main():
     method = sys.argv[1].lower()
     filename = sys.argv[2]
 
-    algorithms = {
-        'tt': ('Sentence', 'TruthTable'),
-        'fc': ('Parse', 'ForwardChaining'),
-        'bc': ('Parse', 'BackwardChaining'),
-        'rete': ('Parse', 'Rete'),
-        'walksat': ('Sentence', 'WalkSAT')
-    }
-
-    if method not in algorithms:
-        print("Invalid method. Method must be TT, FC, BC, RETE or WALKSAT.")
-        sys.exit(1)
-
-    parse_module, algorithm_module = algorithms[method]
-    parse_module = globals()[parse_module]
-    algorithm_module = __import__('Algorithms.' + algorithm_module, fromlist=[algorithm_module])
+    filetype = Parse.checkfiletype(filename)
     
-    kb, query = parse_module.parse(filename)
-    result = algorithm_module.check(kb, query)
+    if filetype == 'HC':
+        kb, query = Parse.parse(filename)
+    elif filetype == 'GK':
+        kb, query = Sentence.parse(filename)
+    else:
+        print('Incorrect file type')
+
+    if method == 'tt':
+        result = TruthTable.check(kb, query)
+    elif method == 'fc':
+        result = ForwardChaining.check(kb, query)
+    elif method == 'bc':
+        result = BackwardChaining.check(kb, query)
+    elif method == 'rt':
+        result = Rete.check(kb, query)
+    elif method == 'ws':
+        result = WalkSAT.check(kb, query)
+    else:
+        print("Invalid method. Method must be TT, FC or BC.")
+        sys.exit(1)
 
     print(result)
 

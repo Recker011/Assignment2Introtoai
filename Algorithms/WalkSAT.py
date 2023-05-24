@@ -68,8 +68,3 @@ class WalkSAT:
                 symbol = best_symbol
             model[symbol] = not model[symbol]
         return 'NO'
-
-# # Example usage
-# kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
-# query = 'd'
-# print(WalkSAT.check(kb, query))

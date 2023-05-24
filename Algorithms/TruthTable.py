@@ -1,8 +1,9 @@
 import re
+from Parse import Parse
 
 class TruthTable:
     @staticmethod
-    def check(kb, query):
+    def check(kb, query):       
         # Extract all symbols from the knowledge base and query
         symbols = list(set(re.findall(r'[a-z]+[0-9]*', kb + query)))
 
