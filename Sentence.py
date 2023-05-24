@@ -230,6 +230,8 @@ class Sentence:
                         lhs.clause, rhs.subclauses[0].clause, rhs.subclauses[1].clause)
     @staticmethod                
     def parse(file):
+        #Parse a text file and convert into CNF
+        
         tell, ask = Parse.parse(file)
         
         tell = con(tell)
@@ -238,6 +240,8 @@ class Sentence:
         return tell, ask
     
 def con(insert):
+    #Convert passed parameter to CNF 
+    
     i = 0
     
     while i < len(insert):
@@ -245,7 +249,7 @@ def con(insert):
         insert[i] = clause.toCNF().clause
         i += 1
         
-    final = '&'.join(insert)
-    final = final.replace('||', '|')
+    final = '&'.join(insert) #Combine all clauses with conjunction
+    final = final.replace('||', '|') #Change disjunction connective to work with other algorithms
     
     return final  
