@@ -14,7 +14,9 @@ class TruthTable:
             # Replace ~ with not and add a space after it
             expression = expression.replace('~', 'not ')
             # Replace & with and and | with or
-            expression = expression.replace('&', ' and ').replace('|', ' or ')
+            expression = '(' + expression.replace('&', ') and (') + ')'
+            # Replace | with "or"
+            expression = expression.replace('|', ' or ')
             # Evaluate the resulting expression
             try:
                 return eval(expression)

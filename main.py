@@ -32,10 +32,13 @@ def main():
         kb, query = Sentence.parse(filename)
         result = TruthTable.check(kb, query)
     elif method == 'fc':
+        kb, query = Parse.parse(filename)
         result = ForwardChaining.check(kb, query)
     elif method == 'bc':
+        kb, query = Parse.parse(filename)
         result = BackwardChaining.check(kb, query)
     elif method == 'rt':
+        kb, query = Parse.parse(filename)
         result = Rete.check(kb, query)
     elif method == 'ws':
         kb, query = Sentence.parse(filename)

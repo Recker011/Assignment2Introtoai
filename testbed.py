@@ -8,8 +8,8 @@ from Sentence import Sentence
 from Parse import Parse
 
 def ttcheck():
-    kb = '((~a | ~c | ~d) & (a | c) & b & (~b | a) & c & (~f | g))'
-    query = '~d & (g | ~f)'
+    kb = '(~a|~c|~d)&(a|c)&(a|d)&b&(~b|a)&c&(~f|g)'
+    query = 'd'
     result = TruthTable.check(kb, query)
     #print(query)
     print(result)
@@ -67,7 +67,7 @@ def walksatcheck():
     print(WalkSAT.check(kb, query))
     
 def sentencecheck():
-    filename = "Test-Files/test_HornKB.txt"
+    filename = "Test-Files/test_genericKB.txt"
     kb, query = Sentence.parse(filename)
     print(f"KB:{kb}\nQuery:{query}")
 
@@ -76,7 +76,7 @@ def resolutioncheck():
     query = 'd'
     print(Resolution.check(kb, query))
 
-#ttcheck()
+ttcheck()
 #fccheck()
 #bccheck()
 #retecheck()
@@ -86,4 +86,4 @@ def resolutioncheck():
 #walksatcheck()
 #checkfiletype()
 #sentencecheck()
-resolutioncheck()
+#resolutioncheck()
