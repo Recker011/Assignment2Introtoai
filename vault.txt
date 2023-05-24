@@ -6,9 +6,9 @@
         print(f'p: {p}, agenda: {agenda}, entailed: {entailed}, count: {count}')
 
 generickb_1
-((~a & c) | (~c & a) | (~d & c) | (~d & a)) & ((~a & d) | (~c & d) | (~c & a) | (~d & a))
+(a | ~c | d) & (~a | c | ~d) & b & (~b | a) & c & (~f | g)
 
-~d & (~g | ~f)
+~d & (g | ~f)
 
 KB: ['p2=>p3', 'p3=>p1', 'c=>e', 'b&e=>f', 'f&g=>h', 'p1=>d', 'p1&p3=>c', 'a', 'b', 'p2']
 Query: ['d']

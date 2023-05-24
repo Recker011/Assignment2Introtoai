@@ -6,14 +6,14 @@ from Algorithms.WalkSAT import WalkSAT
 from Parse import Parse
 
 def ttcheck():
-    kb = '((~a & c) | (~c & a) | (~d & c) | (~d & a)) & ((~a & d) | (~c & d) | (~c & a) | (~d & a))'
-    query = '~d & (~g | ~f)'
+    kb = '((~a | ~c | ~d) & (a | c) & b & (~b | a) & c & (~f | g))'
+    query = '~d & (g | ~f)'
     result = TruthTable.check(kb, query)
     #print(query)
     print(result)
     
 def fccheck():
-    filename = "Test-Files/test_HornKB.txt"
+    filename = "Test-Files/test_Horn1.txt"
     kb, query = Parse.parse(filename)
     result = ForwardChaining.check(kb, query)
     #print(query)
@@ -66,8 +66,8 @@ def walksatcheck():
 
 
 
-ttcheck()
-#fccheck()
+#ttcheck()
+fccheck()
 #bccheck()
 #retecheck()
 #testparse()

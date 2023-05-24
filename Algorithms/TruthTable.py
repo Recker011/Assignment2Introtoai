@@ -1,5 +1,5 @@
 import re
-from Parse import Parse
+#from Parse import Parse
 
 class TruthTable:
     @staticmethod
