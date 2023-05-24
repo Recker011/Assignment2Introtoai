@@ -1,22 +1,28 @@
+from Parse import Parse
+
 class BackwardChaining:
     @staticmethod
     def check(KB, q):
-        # Initialize the inferred dictionary
-        inferred = {}
-        for clause in KB:
-            if "=>" in clause:
-                premise, conclusion = clause.split("=>")
-                inferred[conclusion.strip()] = False
+        kbtype = Parse.checkkbtype(KB)
+        if kbtype == "HC":
+            # Initialize the inferred dictionary
+            inferred = {}
+            for clause in KB:
+                if "=>" in clause:
+                    premise, conclusion = clause.split("=>")
+                    inferred[conclusion.strip()] = False
+                else:
+                    inferred[clause.strip()] = False
+            # Initialize the entailed list
+            entailed = []
+            # Call the recursive BC function
+            result = BackwardChaining.BC(KB, q[0], inferred, entailed)
+            if result:
+                return "YES: " + ", ".join(entailed) # outputs the YES and order of entailed facts
             else:
-                inferred[clause.strip()] = False
-        # Initialize the entailed list
-        entailed = []
-        # Call the recursive BC function
-        result = BackwardChaining.BC(KB, q[0], inferred, entailed)
-        if result:
-            return "YES: " + ", ".join(entailed)  # outputs the YES and order of entailed facts
+                return "NO"
         else:
-            return "NO"
+            return "The Knowledge Base is not in Horn Clause format"
 
     @staticmethod
     def BC(KB, q, inferred, entailed):
@@ -44,3 +50,13 @@ class BackwardChaining:
                 return True
         return False
 
+# The kbtype is recognized with this function
+
+@staticmethod
+def checkkbtype(kb):
+    if Parse.is_horn_clause(kb):
+        return "HC"
+    else:
+        return "GK"
+
+# This is a static method in the Parse class 

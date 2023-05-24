@@ -1,3 +1,5 @@
+from Parse import Parse
+
 class Rete:
     @staticmethod
     def implies(fact):
@@ -16,27 +18,31 @@ class Rete:
 
     @staticmethod
     def check(KB, query):
-        # Initialize agenda with facts from KB
-        agenda = [fact for fact in KB if Rete.is_fact(fact)]
-        inferred = {}
-        entailed_facts = []
+        kbtype = Parse.checkkbtype(KB)
+        if kbtype == "HC":
+            # Initialize agenda with facts from KB
+            agenda = [fact for fact in KB if Rete.is_fact(fact)]
+            inferred = {}
+            entailed_facts = []
 
-        while agenda:
-            p = agenda.pop(0)
+            while agenda:
+                p = agenda.pop(0)
 
-            # If p matches the query, return YES with entailed facts
-            if p == query[0]:
-                entailed_facts.append(p)
-                return f'YES: {", ".join(entailed_facts)}'
+                # If p matches the query, return YES with entailed facts
+                if p == query[0]:
+                    entailed_facts.append(p)
+                    return f'YES: {", ".join(entailed_facts)}'
 
-            inferred[p] = True
+                inferred[p] = True
 
-            for fact in KB:
-                premises = Rete.entails(fact)
-                # If all premises are inferred, add the implication to entailed facts and agenda
-                if all(inferred.get(premise) for premise in premises):
-                    q = Rete.implies(fact)
-                    if q and not inferred.get(q):
-                        entailed_facts.append(q)
-                        agenda.append(q)
-        return 'NO'
+                for fact in KB:
+                    premises = Rete.entails(fact)
+                    # If all premises are inferred, add the implication to entailed facts and agenda
+                    if all(inferred.get(premise) for premise in premises):
+                        q = Rete.implies(fact)
+                        if q and not inferred.get(q):
+                            entailed_facts.append(q)
+                            agenda.append(q)
+            return 'NO'
+        else:
+            return "The Knowledge Base is not in Horn Clause format"
