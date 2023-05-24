@@ -17,11 +17,11 @@ class Resolution:
             for (clause_i, clause_j) in pairs:
                 resolvents = resolve(clause_i, clause_j) #Resolve each pair of clauses and return the resolvents
                 if 0 in resolvents: #Check for empty clause(0) in resolvents
-                    return True
+                    print(YES)
                 if resolvents:
                     new = new.union(set(resolvents)) #Create union with returned resolvents
             if new.issubset(set(clauses)): #Check if union of resolvents is a subset of the list of clauses
-                return False
+                print(NO)
             for clause in new: #Add resolvents to list of clauses if not already in the list
                 if clause not in clauses:
                     clauses.append(clause)
