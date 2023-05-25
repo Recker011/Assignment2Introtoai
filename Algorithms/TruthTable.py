@@ -9,7 +9,7 @@ class TruthTable:
         def evaluate(expression, values):
             # Replace symbols in the expression with their corresponding values
             for s in symbols:
-                #  the evaluate function uses the get method to retrieve the value of each symbol from the values dictionary. 
+                # the evaluate function uses the get method to retrieve the value of each symbol from the values dictionary. 
                 # If a symbol is not present in the values dictionary, the get method returns False by default. 
                 # This allows the code to handle undefined variables without raising an error.
                 expression = expression.replace(s, str(values.get(s, False)))
