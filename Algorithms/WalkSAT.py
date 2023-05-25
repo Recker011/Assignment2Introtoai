@@ -3,7 +3,7 @@ import random
 class WalkSAT:
     
     @staticmethod
-    def check(kb, query, max_flips=1000, p=0.5):
+    def check(kb, query, max_flips=100000, p=0.5):
         # Convert KB and query to CNF
         kb = kb.split('&')
         kb = [clause.strip().replace('(', '').replace(')', '').split('|') for clause in kb]

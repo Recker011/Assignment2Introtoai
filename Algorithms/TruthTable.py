@@ -1,16 +1,18 @@
 import re
-#from Parse import Parse
 
 class TruthTable:
     @staticmethod
-    def check(kb, query):       
+    def check(kb, query):
         # Extract all symbols from the knowledge base and query
         symbols = list(set(re.findall(r'[a-z]+[0-9]*', kb + query)))
 
         def evaluate(expression, values):
             # Replace symbols in the expression with their corresponding values
             for s in symbols:
-                expression = expression.replace(s, str(values[s]))
+                #  the evaluate function uses the get method to retrieve the value of each symbol from the values dictionary. 
+                # If a symbol is not present in the values dictionary, the get method returns False by default. 
+                # This allows the code to handle undefined variables without raising an error.
+                expression = expression.replace(s, str(values.get(s, False)))
             # Replace ~ with not and add a space after it
             expression = expression.replace('~', 'not ')
             # Replace & with and and | with or
@@ -21,7 +23,6 @@ class TruthTable:
             try:
                 return eval(expression)
             except Exception as e:
-                print(f"An error occurred while evaluating the expression: {e}")
                 return False
 
         models = 0
@@ -36,4 +37,4 @@ class TruthTable:
                     models += 1
                 else:
                     return 'NO'
-        return f'YES:{models}'
+        return 'NO' if models == 0 else f'YES:{models}'

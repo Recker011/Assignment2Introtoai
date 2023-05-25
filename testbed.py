@@ -8,8 +8,8 @@ from Sentence import Sentence
 from Parse import Parse
 
 def ttcheck():
-    kb = '(~a|~c|~d)&(a|c)&(a|d)&b&(~b|a)&c&(~f|g)'
-    query = 'd'
+    kb = '(~r|s)&(~s|t)&(~u|v)&w&(~x|y)&z&(~a|b)&(t|c)&~t&(~r|u)&d&e'
+    query = 'c'
     result = TruthTable.check(kb, query)
     #print(query)
     print(result)
@@ -62,28 +62,28 @@ def hftorbcheck():
     print(query)
     
 def walksatcheck():
-    kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
-    query = 'd'
+    kb = '~p|q&~q|r&~r|s&(~s|t)&~p'
+    query = 't'
     print(WalkSAT.check(kb, query))
     
 def sentencecheck():
-    filename = "Test-Files/test_genericKB.txt"
+    filename = "Test-Files/test_Horn3f.txt"
     kb, query = Sentence.parse(filename)
     print(f"KB:{kb}\nQuery:{query}")
 
 def resolutioncheck():
-    kb = '(~p2 | p3) & (~p3 | p1) & (~c | e) & (~b | ~e | f) & (~f | ~g | h) & (~p1 | d) & (~p1 | ~p3 | c) & a & b & p2'
-    query = 'd'
+    kb = '(~t|u)&(~u|v)&(~w|x)&y&(~z|a)&b&(~c|d)&(v|e)&~v&(~t|w)&f&g'
+    query = 'e'
     print(Resolution.check(kb, query))
 
 #ttcheck()
 #fccheck()
 #bccheck()
-retecheck()
+#retecheck()
 #testparse()
 #hftorbcheck()
 #typecheck()
 #walksatcheck()
 #checkfiletype()
 #sentencecheck()
-#resolutioncheck()
+resolutioncheck()
