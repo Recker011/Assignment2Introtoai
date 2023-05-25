@@ -67,7 +67,7 @@ def walksatcheck():
     print(WalkSAT.check(kb, query))
     
 def sentencecheck():
-    filename = "Test-Files/test_Horn3f.txt"
+    filename = "Test-Files/test_HornKB.txt"
     kb, query = Sentence.parse(filename)
     print(f"KB:{kb}\nQuery:{query}")
 
@@ -79,11 +79,11 @@ def resolutioncheck():
 #ttcheck()
 #fccheck()
 #bccheck()
-#retecheck()
+retecheck()
 #testparse()
 #hftorbcheck()
 #typecheck()
 #walksatcheck()
 #checkfiletype()
 #sentencecheck()
-resolutioncheck()
+#resolutioncheck()

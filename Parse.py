@@ -35,7 +35,7 @@ class Parse:
         else:
             return "GK"
     
-    @staticmethod # most likely fucking useless
+    @staticmethod # useful in one very very very vry vryv niche scenario
     def HFtoRB(KB, query):
         rules = []
         for clause in KB:

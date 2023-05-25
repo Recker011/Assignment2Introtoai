@@ -39,7 +39,8 @@ def main():
         result = BackwardChaining.check(kb, query)
     elif method == 'rt':
         kb, query = Parse.parse(filename)
-        result = Rete.check(kb, query)
+        rules, new_query = Parse.HFtoRB(kb, query)
+        result = Rete.check(rules, new_query)
     elif method == 'ws':
         kb, query = Sentence.parse(filename)
         result = WalkSAT.check(kb, query)
@@ -54,3 +55,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
+    # kb, query = Parse.parse(filename)
+    # rules, new_query = Parse.HFtoRB(kb, query)
+    # result = Rete.check(rules, new_query)
